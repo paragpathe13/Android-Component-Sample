@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -36,5 +37,21 @@ class NotificationWorker(context: Context, workerParameters: WorkerParameters) :
 
         // Show the notification
         notificationManager.notify(1, notification)
+    }
+}
+
+class DownloadWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+    override fun doWork(): Result {
+        // Simulate downloading an image
+        Log.d("DownloadWorker", "Image downloaded successfully")
+        return Result.success()
+    }
+}
+
+class CompressWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+    override fun doWork(): Result {
+        // Simulate compressing the image
+        Log.d("CompressWorker", "Image compressed successfully")
+        return Result.success()
     }
 }

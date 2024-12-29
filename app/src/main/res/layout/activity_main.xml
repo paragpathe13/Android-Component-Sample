@@ -42,8 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:backgroundTint="@color/primary"
-            android:text="Stop All"
+            android:backgroundTint="#DE4A4A"
+            android:text="Clean Worker Memory"
             android:id="@+id/stopAllButton"/>
 
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="#DB5959"
             android:text="Stop One by One"
             android:id="@+id/stopOneByOneButton"/>
 
