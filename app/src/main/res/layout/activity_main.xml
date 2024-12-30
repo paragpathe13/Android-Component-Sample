@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -11,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical"
-        android:background="@color/teal_200"
+        android:background="#83DBD2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <Button
@@ -63,6 +64,12 @@
             android:backgroundTint="@color/primary"
             android:text=""
             android:id="@+id/tvItemList"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/workerRecyclerView"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/worker_list_items"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

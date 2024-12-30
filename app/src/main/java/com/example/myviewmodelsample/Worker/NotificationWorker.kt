@@ -11,11 +11,13 @@ import androidx.work.WorkerParameters
 
 class NotificationWorker(context: Context, workerParameters: WorkerParameters) :Worker(context, workerParameters) {
     override fun doWork(): Result {
-        showNotification()
+        val title = inputData.getString("title") ?: "Reminder"
+        val message = inputData.getString("message") ?: "This is your default scheduled notification!"
+        showNotification(title, message)
         return Result.success()
     }
 
-    private fun showNotification() {
+    private fun showNotification(title: String, msg: String) {
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "scheduled_notification_channel"
@@ -29,8 +31,8 @@ class NotificationWorker(context: Context, workerParameters: WorkerParameters) :
 
         // Build the notification
         val notification = NotificationCompat.Builder(applicationContext, channelId)
-            .setContentTitle("Reminder")
-            .setContentText("This is your scheduled notification!")
+            .setContentTitle(title)
+            .setContentText(msg)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
