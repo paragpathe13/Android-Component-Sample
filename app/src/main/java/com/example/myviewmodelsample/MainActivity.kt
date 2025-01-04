@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //splash screen installation
-        installSplashScreen()
-        Thread.sleep(5000)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -52,7 +51,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.categories.observe(this, Observer { categories ->
             binding.workerRecyclerView.adapter = WorkerListAdapter(categories)
         })
-    }
+        WorkManager.getInstance(this).getWorkInfosByTagLiveData("OneTimeWorkerScheduled").observe(this) { workInfos ->
+            workInfos?.forEach { workInfo ->
+                viewModel.categories.value?.add(workInfo.tags.last() +" - " +workInfo.state)
+                //viewModel.categories.value.add(workInfo)
+            }
+        }
+        }
 
     private fun initData() {
         binding.workerRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -132,13 +137,13 @@ class MainActivity : AppCompatActivity() {
                 .addTag("OneTimeWorkerScheduled")
                 .build()
 
-        viewModel.addWorkerInList("OneTimeWorkerScheduled")
         //itemList.add("OneTimeWorkerScheduled")
         //binding.tvItemList.text = itemList.toString()
         // Enqueue the work request
         WorkManager.getInstance(this).enqueue(notificationWorkRequest)
+        //viewModel.addWorkerInList("OneTimeWorkerScheduled", this)
 
-        val wq = WorkQuery.fromStates(listOf(
+       /* val wq = WorkQuery.fromStates(listOf(
             WorkInfo.State.ENQUEUED,
             WorkInfo.State.RUNNING,
             WorkInfo.State.SUCCEEDED,
@@ -146,7 +151,9 @@ class MainActivity : AppCompatActivity() {
             WorkInfo.State.CANCELLED))
 
         val latestData =  WorkManager.getInstance(this).getWorkInfos(wq).get()
-        Log.d("testlog",latestData.toString())
+        Log.d("testlog",latestData.toString())*/
+
+        binding.workerRecyclerView.adapter?.notifyDataSetChanged()
 
     }
 
@@ -163,17 +170,17 @@ class MainActivity : AppCompatActivity() {
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 )
                 .setInputData(inputData)
-                .addTag("PeriodicWorkerScheduled")
+                .addTag("OneTimeWorkerScheduled")
                 .build()
 
-        viewModel.addWorkerInList("PeriodicWorkerScheduled")
         //itemList.add("PeriodicWorkerScheduled")
         //binding.tvItemList.text = itemList.toString()
 
         // Enqueue the work request
         WorkManager.getInstance(this).enqueue(notificationWorkRequest)
+        //viewModel.addWorkerInList("PeriodicWorkerScheduled", this)
 
-        val wq = WorkQuery.fromStates(listOf(
+        /*val wq = WorkQuery.fromStates(listOf(
             WorkInfo.State.ENQUEUED,
             WorkInfo.State.RUNNING,
             WorkInfo.State.SUCCEEDED,
@@ -181,7 +188,10 @@ class MainActivity : AppCompatActivity() {
             WorkInfo.State.CANCELLED))
 
         val latestData =  WorkManager.getInstance(this).getWorkInfosLiveData(wq)
-        Log.d("testlog",latestData.toString())
+        Log.d("testlog",latestData.toString())*/
+
+        binding.workerRecyclerView.adapter?.notifyDataSetChanged()
+
     }
 
     private fun scheduleChainedWorker() {
@@ -192,10 +202,10 @@ class MainActivity : AppCompatActivity() {
 
         // Create individual work requests
         val downloadWork = OneTimeWorkRequestBuilder<DownloadWorker>()
-            .addTag("ChainedWorkerScheduled")
+            .addTag("OneTimeWorkerScheduled")
             .build()
         val compressWork = OneTimeWorkRequestBuilder<CompressWorker>()
-            .addTag("ChainedWorkerScheduled")
+            .addTag("OneTimeWorkerScheduled")
             .build()
 
         val notificationWorkRequest =
@@ -205,11 +215,10 @@ class MainActivity : AppCompatActivity() {
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 )
                 .setInputData(inputData)
-                .addTag("ChainedWorkerScheduled")
+                .addTag("OneTimeWorkerScheduled")
                 .build()
 
         //itemList.add("ChainedWorkerScheduled")
-        viewModel.addWorkerInList("ChainedWorkerScheduled")
         //binding.tvItemList.text = itemList.toString()
 
         // Enqueue the work request
@@ -220,8 +229,9 @@ class MainActivity : AppCompatActivity() {
             .then(notificationWorkRequest)      // End with upload work
             .enqueue()                          // Enqueue the chain
 
+        //viewModel.addWorkerInList("ChainedWorkerScheduled", this)
 
-        val wq = WorkQuery.fromStates(listOf(
+        /*val wq = WorkQuery.fromStates(listOf(
             WorkInfo.State.ENQUEUED,
             WorkInfo.State.RUNNING,
             WorkInfo.State.SUCCEEDED,
@@ -229,7 +239,8 @@ class MainActivity : AppCompatActivity() {
             WorkInfo.State.CANCELLED))
 
         val latestData =  WorkManager.getInstance(this).getWorkInfosLiveData(wq)
-        Log.d("testlog",latestData.toString())
+        Log.d("testlog",latestData.toString())*/
+        binding.workerRecyclerView.adapter?.notifyDataSetChanged()
 
     }
 }
