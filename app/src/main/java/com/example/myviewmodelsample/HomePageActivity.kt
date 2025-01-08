@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 class HomePageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         installSplashScreen()
         Thread.sleep(5000)
 
